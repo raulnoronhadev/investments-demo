@@ -7,3 +7,16 @@ spring:
     open-in-view: false
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
+  threads:
+    virtual:
+      enabled: true
+  cache:
+    type: caffeine
+    cache-names: selicRate
+    caffeine:
+      spec: expireAfterWrite=6h
+
+bcb:
+  selic:
+    base-url: https://api.bcb.gov.br
+    series-code: 432

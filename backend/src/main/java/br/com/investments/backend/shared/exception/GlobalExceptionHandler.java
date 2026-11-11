@@ -1,4 +1,5 @@
 package br.com.investments.backend.shared.exception;
+import br.com.investments.backend.rate.SelicUnavailableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,6 +19,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidInvestmentException.class)
     public ProblemDetail handleInvalid(InvalidInvestmentException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(SelicUnavailableException.class)
+    public ProblemDetail handleSelicUnavailable(SelicUnavailableException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
