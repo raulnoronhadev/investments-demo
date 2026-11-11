@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import br.com.investments.backend.account.AccountRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -16,12 +17,16 @@ import java.time.LocalDate;
 public class InvestmentService {
 
     private final InvestmentRepository repository;
+    private final AccountRepository accountRepository;
 
     public Page<InvestmentResponse> findAll(Pageable pageable) {
         return repository.findAll(pageable).map(InvestmentResponse::from);
     }
 
     public Page<InvestmentResponse> findByAccount(Long accountId, Pageable pageable) {
+        if (!accountRepository.existsById(accountId)) {
+            throw new ResourceNotFoundException("Account", accountId);
+        }
         return repository.findByAccountId(accountId, pageable).map(InvestmentResponse::from);
     }
 
@@ -31,6 +36,9 @@ public class InvestmentService {
 
     @Transactional
     public InvestmentResponse create(CreateInvestmentRequest request) {
+        if (!accountRepository.existsById(request.accountId())) {
+            throw new ResourceNotFoundException("Account", request.accountId());
+        }
         validateTreasuryFields(request.type(), request.maturityDate(), request.rate());
         Investment investment = new Investment();
         investment.setAccountId(request.accountId());

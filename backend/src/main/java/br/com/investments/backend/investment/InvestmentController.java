@@ -32,6 +32,13 @@ public class InvestmentController {
         return service.findById(id);
     }
 
+    @GetMapping("/api/accounts/{accountId}/investments")
+    public Page<InvestmentResponse> listByAccount(
+            @PathVariable Long accountId,
+            @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return service.findByAccount(accountId, pageable);
+    }
+
     @PostMapping
     public ResponseEntity<InvestmentResponse> create(
             @Valid @RequestBody CreateInvestmentRequest request,
