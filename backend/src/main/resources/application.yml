@@ -12,11 +12,12 @@ spring:
       enabled: true
   cache:
     type: caffeine
-    cache-names: selicRate
+    cache-names: selicRate,ratesSummary
     caffeine:
       spec: expireAfterWrite=6h
 
 bcb:
-  selic:
-    base-url: https://api.bcb.gov.br
-    series-code: 432
+  base-url: https://api.bcb.gov.br
+  selic: 432
+  ipca: 433
+  cdi: 4391
